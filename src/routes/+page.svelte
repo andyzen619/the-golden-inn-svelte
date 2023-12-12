@@ -17,14 +17,18 @@
 <div
 	class="overflow-auto h-screen bg-[url('https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca')]"
 >
+	<div class="bg-red-700 flex justify-between p-6">
+		<button class="text-white">Menu</button>
+		<input class="rounded-md"/>
+	</div>
 	<div class="flex flex-col justify-center text-white">
-		<div class="flex justify-center p-8">
+		<div class="flex justify-center">
 			<div class="px-6 py-20 rounded-full text-3xl opacity-75 bg-red-600">
 				<div class="flex justify-center opacity-100">GOLDEN INN</div>
 				<div class="flex justify-center opacity-100">RESTAURANT</div>
 			</div>
 		</div>
-		<div class="flex justify-center text-lg text-center p-4">
+		<div class="flex justify-center text-lg text-center">
 			SERVING AUTHENTIC CANTONESE STYLE CHINESE FOOD FOR {numberOfYearsInOperation} YEARS
 		</div>
 		<button class="bg-gray-300/75 text-black mx-auto px-10 py-4">Menu</button>
