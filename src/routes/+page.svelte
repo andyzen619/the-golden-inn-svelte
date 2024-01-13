@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 
-	import { getYearsSinceStartYear, getBannerMessage, getHoursOfOperation } from '$lib';
+	import { getYearsSinceStartYear, getBannerMessage, getHoursOfOperation, getMenu } from '$lib';
 
 	let numberOfYearsInOperation = getYearsSinceStartYear(1997);
 
@@ -20,6 +20,10 @@
 		{ day: 'Sat', hours: '11:30 a.m. – 09:00 p.m.' },
 		{ day: 'Sun', hours: '11:30 a.m. – 09:00 p.m.' }
 	];
+
+	let menu = {};
+
+	let menuOpen = false;
 
 	/**
 	 * @type {HTMLDivElement}
@@ -46,6 +50,8 @@
 		bannerMessage = await getBannerMessage();
 
 		hoursOfOperation = await getHoursOfOperation();
+
+		menu = await getMenu();
 	});
 </script>
 
@@ -54,9 +60,30 @@
 	style="background-image: url('https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca')"
 >
 	<div class="bg-red-700 flex justify-between p-6">
-		<button class="text-white">Menu</button>
+		<button class="text-white" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
 		<input class="rounded-md" />
 	</div>
+	{#if menuOpen}
+		<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+			<div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+				<div
+					class="flex min-h-full items-start justify-center p-4 text-center sm:items-center sm:p-0"
+				>
+					<div
+						class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+					>
+						<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex">
+							<div class="flex justify-between w-screen">
+								<div />
+								<button on:click={() => (menuOpen = !menuOpen)}>CLOSE</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
 	<div>
 		{#if bannerMessage.visible}
 			<div class="flex-col bg-yellow-50 from-slate-300 p-4 my-0.5 rounded-sm">
