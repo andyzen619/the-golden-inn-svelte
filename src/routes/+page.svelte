@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 
-	import { getYearsSinceStartYear, getBannerMessage } from '$lib';
+	import { getYearsSinceStartYear, getBannerMessage, getHoursOfOperation } from '$lib';
 
 	let numberOfYearsInOperation = getYearsSinceStartYear(1997);
 
@@ -11,7 +11,7 @@
 		visible: false
 	};
 
-	const daysOfTheWeek = [
+	let hoursOfOperation = [
 		{ day: 'Mon', hours: 'Closed' },
 		{ day: 'Tue', hours: '11:30 a.m. – 09:00 p.m.' },
 		{ day: 'Wed', hours: '11:30 a.m. – 09:00 p.m.' },
@@ -44,6 +44,8 @@
 		map = new google.maps.Map(container, mapOptions);
 
 		bannerMessage = await getBannerMessage();
+
+		hoursOfOperation = await getHoursOfOperation();
 	});
 </script>
 
@@ -96,12 +98,12 @@
 			<div id="/visit_us" class="flex justify-center text-xl">Hours of Operation</div>
 			<div class="flex justify-evenly">
 				<div>
-					{#each daysOfTheWeek as item}
+					{#each hoursOfOperation as item}
 						<div>{item.day}</div>
 					{/each}
 				</div>
 				<div>
-					{#each daysOfTheWeek as item}
+					{#each hoursOfOperation as item}
 						<div>{item.hours}</div>
 					{/each}
 				</div>

@@ -21,3 +21,13 @@ export async function getBannerMessage() {
 
 	return { message, title, visible };
 }
+
+export async function getHoursOfOperation() {
+	const reference = doc(db, 'messages', 'frontPageMessages');
+
+	const snapshot = await getDoc(reference);
+
+	const { hoursOfOperation } = snapshot.data();
+
+	return hoursOfOperation;
+}

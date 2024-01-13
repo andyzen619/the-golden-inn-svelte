@@ -13,4 +13,4 @@ export function getYearsSinceStartYear(startYear) {
 	}
 }
 
-export { getBannerMessage } from './firebase';
+export { getBannerMessage, getHoursOfOperation } from './firebase';
