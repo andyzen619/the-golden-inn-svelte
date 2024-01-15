@@ -76,9 +76,9 @@ function MenuItem(params) {
  * @param {{ [s: string]: any; } | ArrayLike<any>} all
  */
 function applyMenuItemToAll(all) {
-	const [name, ...restOfValues] = Object.values(all);
+	const { name, ...restOfValues } = all;
 
-	return restOfValues.map((value) => {
+	return Object.values(restOfValues).map((value) => {
 		return MenuItem(value);
 	});
 }

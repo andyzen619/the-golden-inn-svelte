@@ -74,10 +74,14 @@
 						class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
 					>
 						<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex">
-							<div class="flex justify-between w-screen">
-								<div />
+							<div class="flex justify-end w-screen">
 								<button on:click={() => (menuOpen = !menuOpen)}>CLOSE</button>
 							</div>
+						</div>
+						<div class="flex-col">
+							{#each menu.combinations.list as item}
+								<div>{item.name}</div>
+							{/each}
 						</div>
 					</div>
 				</div>
