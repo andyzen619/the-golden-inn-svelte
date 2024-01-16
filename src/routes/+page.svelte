@@ -51,7 +51,17 @@
 
 		hoursOfOperation = await getHoursOfOperation();
 
-		menu = await getMenu();
+		menu = Object.entries(await getMenu()).reduce((acc, curr) => {
+			const [key, value] = curr;
+
+			return {
+				...acc,
+				[key]: {
+					...value,
+					visible: false
+				}
+			};
+		}, {});
 	});
 </script>
 
@@ -74,13 +84,38 @@
 						class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
 					>
 						<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex">
-							<div class="flex justify-end w-screen">
-								<button on:click={() => (menuOpen = !menuOpen)}>CLOSE</button>
+							<div class="flex justify-between w-screen">
+								<div class="font-bold text-lg">MENU</div>
+								<button class="text-xl" on:click={() => (menuOpen = !menuOpen)}>X</button>
 							</div>
 						</div>
-						<div class="flex-col">
-							{#each menu.combinations.list as item}
-								<div>{item.name}</div>
+						<div>
+							{#each Object.values(menu) as category}
+								<div class="m-4">
+									<div class="flex justify-center">
+										{#if category.visible}
+											<button
+												class="flex justify-center border-solid border-2 border-gray-500 rounded-md w-full p-2"
+												on:click={() => (category.visible = !category.visible)}
+												>{category.name}</button
+											>
+										{:else}
+											<button
+												class="flex justify-center border-solid border-2 border-gray-300 rounded-md w-full p-2"
+												on:click={() => (category.visible = !category.visible)}
+												>{category.name}</button
+											>
+										{/if}
+									</div>
+									{#if category.visible}
+										{#each category.list as item}
+											<div class="p-4">
+												<div>{item.name}</div>
+												<div>{item.price}</div>
+											</div>
+										{/each}
+									{/if}
+								</div>
 							{/each}
 						</div>
 					</div>
@@ -109,7 +144,10 @@
 			<div class="flex justify-center text-lg text-center">
 				SERVING AUTHENTIC CANTONESE STYLE CHINESE FOOD FOR {numberOfYearsInOperation} YEARS
 			</div>
-			<button class="bg-gray-300/75 text-black mx-auto px-10 py-4">Menu</button>
+			<button
+				class="bg-gray-300/75 text-black mx-auto px-10 py-4"
+				on:click={() => (menuOpen = !menuOpen)}>Menu</button
+			>
 		</div>
 		<div class="flex flex-col w-screen justify-evenly text-white">
 			<div class="flex justify-center text-5xl">VISIT US</div>
