@@ -110,8 +110,18 @@
 									{#if category.visible}
 										{#each category.list as item}
 											<div class="p-4">
-												<div>{item.name}</div>
-												<div>{item.price}</div>
+												<div class="flex justify-between">
+													<div class="text-lg">{item.name}</div>
+													<div class="font-bold text-lg text-green-500">{item.price}</div>
+												</div>
+												<div class="font-light">
+													{item.description}
+												</div>
+												{#if item.image}
+													<div class="flex justify-center py-4">
+														<img src={item.image} alt="Menu item image" width="300" height="400" />
+													</div>
+												{/if}
 											</div>
 										{/each}
 									{/if}
