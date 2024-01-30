@@ -25,28 +25,7 @@
 
 	let menuOpen = false;
 
-	/**
-	 * @type {HTMLDivElement}
-	 */
-	let container;
-
-	let map;
-
 	onMount(async () => {
-		const position = {
-			lat: 44.00682504045187,
-			lng: -77.14345292848745
-		};
-
-		const mapOptions = {
-			center: position,
-			zoom: 16,
-			mapId: 'Map_ID'
-		};
-
-		// @ts-ignore
-		map = new google.maps.Map(container, mapOptions);
-
 		bannerMessage = await getBannerMessage();
 
 		hoursOfOperation = await getHoursOfOperation();
@@ -91,17 +70,18 @@
 						</div>
 						<div>
 							{#each Object.values(menu) as category}
-								<div class="m-4">
-									<div class="flex justify-center">
+								<div class="m-4 border-solid border-2 border-gray-300 rounded-md">
+									<div class="flex justify-start">
 										{#if category.visible}
 											<button
-												class="flex justify-center border-solid border-2 border-gray-500 rounded-md w-full p-2"
+												class="flex justify-center p-2 text-lg w-full font-black"
 												on:click={() => (category.visible = !category.visible)}
-												>{category.name}</button
 											>
+												{category.name}
+											</button>
 										{:else}
 											<button
-												class="flex justify-center border-solid border-2 border-gray-300 rounded-md w-full p-2"
+												class="flex justify-start p-2 text-lg w-full"
 												on:click={() => (category.visible = !category.visible)}
 												>{category.name}</button
 											>
@@ -109,8 +89,8 @@
 									</div>
 									{#if category.visible}
 										{#each category.list as item}
-											<div class="p-4">
-												<div class="flex justify-between">
+											<div class="p-6">
+												<div class="flex justify-between font-medium">
 													<div class="text-lg">{item.name}</div>
 													<div class="font-bold text-lg text-green-500">{item.price}</div>
 												</div>
@@ -119,7 +99,7 @@
 												</div>
 												{#if item.image}
 													<div class="flex justify-center py-4">
-														<img src={item.image} alt="Menu item image" width="300" height="400" />
+														<img src={item.image} alt="Menu item" width="300" height="400" />
 													</div>
 												{/if}
 											</div>
@@ -189,5 +169,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="h-2/5" bind:this={container} />
+	<iframe
+		class="flex w-full h-2/5"
+		title="map"
+		src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=19"
+	/>
 </div>
