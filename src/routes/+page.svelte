@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Fuse from 'fuse.js';
 
 	import { getYearsSinceStartYear, getBannerMessage, getHoursOfOperation, getMenu } from '$lib';
 
@@ -25,12 +26,26 @@
 
 	let menuOpen = false;
 
+	/**
+	 * @type {any[]}
+	 */
+	let menuSearchResults = [];
+
+	let menuSearchQuery = '';
+
+	/**
+	 * @type {string | Fuse<string | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; }>}
+	 */
+	let fuse;
+
 	onMount(async () => {
 		bannerMessage = await getBannerMessage();
 
 		hoursOfOperation = await getHoursOfOperation();
 
-		menu = Object.entries(await getMenu()).reduce((acc, curr) => {
+		const menuFromDb = await getMenu();
+
+		menu = Object.entries(menuFromDb).reduce((acc, curr) => {
 			const [key, value] = curr;
 
 			return {
@@ -41,7 +56,30 @@
 				}
 			};
 		}, {});
+
+		const menuToSearch = Object.entries(menuFromDb).reduce((acc, curr) => {
+			const [, value] = curr;
+
+			if (!value) {
+				return { ...acc };
+			}
+
+			const { list } = value;
+
+			return [...acc, ...list];
+		}, []);
+
+		fuse = new Fuse(menuToSearch, {
+			keys: ['name']
+		});
 	});
+
+	function performSearch() {
+		const result = fuse.search(menuSearchQuery);
+
+		// @ts-ignore
+		menuSearchResults = result.map(({ item }) => item);
+	}
 </script>
 
 <div
@@ -50,7 +88,26 @@
 >
 	<div class="bg-red-700 flex justify-between p-6">
 		<button class="text-white" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
-		<input class="rounded-md" />
+		<div>
+			<input
+				class="rounded-md"
+				bind:value={menuSearchQuery}
+				on:input={performSearch}
+				placeholder="Type to search..."
+			/>
+			<div class="absolute right-5 top-14 max-h-80 w-80 p-4 bg-white z-50 overflow-auto">
+				{#each menuSearchResults as item}
+					<div class="flex justify-between">
+						<div>
+							{item.name}
+						</div>
+						<div>
+							{item.price}
+						</div>
+					</div>
+				{/each}
+			</div>
+		</div>
 	</div>
 	{#if menuOpen}
 		<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
