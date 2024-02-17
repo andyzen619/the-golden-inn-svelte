@@ -86,11 +86,12 @@
 </script>
 
 <div
-	class="h-screen"
+	class="h-full"
 	style="background-image: url('https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca')"
 >
+	<!-- NAV BAR -->
 	<div class="bg-red-700 flex justify-between p-6">
-		<button class="text-white" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
+		<button class="text-white text-2xl" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
 		<div>
 			<input
 				class="rounded-md p-2"
@@ -99,9 +100,11 @@
 				placeholder="Type to search..."
 			/>
 			{#if menuSearchResults.length}
-				<div class="absolute right-5 top-14 max-h-80 w-80 p-4 bg-white z-50 overflow-auto">
+				<div
+					class="absolute right-5 top-20 max-h-96 w-96 bg-white z-50 overflow-auto rounded-md p-2"
+				>
 					{#each menuSearchResults as item}
-						<div class="flex justify-between">
+						<div class="flex justify-between p-4 mx-auto">
 							<div>
 								{item.name}
 							</div>
@@ -114,6 +117,8 @@
 			{/if}
 		</div>
 	</div>
+
+	<!-- MENU -->
 	{#if menuOpen}
 		<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 			<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
@@ -175,7 +180,9 @@
 			</div>
 		</div>
 	{/if}
+
 	<div>
+		<!-- BANNER MESSAGE -->
 		{#if bannerMessage.visible}
 			<div class="flex-col bg-yellow-50 from-slate-300 p-4 my-0.5 rounded-sm">
 				<div class="flex justify-center text-lg font-semibold font-mono">
@@ -186,14 +193,16 @@
 				</div>
 			</div>
 		{/if}
+
+		<!-- LANDING -->
 		<div class="flex flex-col justify-center text-white">
-			<div class="flex justify-center">
+			<div class="flex justify-center p-4">
 				<div class="px-6 py-20 rounded-full text-3xl opacity-75 bg-red-600">
 					<div class="flex justify-center opacity-100">GOLDEN INN</div>
 					<div class="flex justify-center opacity-100">RESTAURANT</div>
 				</div>
 			</div>
-			<div class="flex justify-center text-lg text-center">
+			<div class="flex justify-center text-lg text-center p-4">
 				SERVING AUTHENTIC CANTONESE STYLE CHINESE FOOD FOR {numberOfYearsInOperation} YEARS
 			</div>
 			<button
@@ -201,13 +210,15 @@
 				on:click={() => (menuOpen = !menuOpen)}>Menu</button
 			>
 		</div>
-		<div class="flex flex-col w-screen justify-evenly text-white">
-			<div class="flex justify-center text-5xl">VISIT US</div>
-			<div class="flex justify-center text-xl text-center">
+
+		<!-- VISIT US -->
+		<div class="flex flex-col w-screen justify-evenly text-white p-4">
+			<div class="flex justify-center text-5xl p-4">VISIT US</div>
+			<div class="flex justify-center text-xl text-center p-4">
 				155 Main Street West, Picton, Prince Edward, ON, Canada
 			</div>
-			<div class="flex justify-center text-xl">613-476-7056</div>
-			<div class="flex justify-center">
+			<div class="flex justify-center text-xl p-4">613-476-7056</div>
+			<div class="flex justify-center p-4">
 				<a href="tel:6134767056">
 					<div
 						class="rounded-full p-4 shadow bg-red-700 opacity-75 hover:opacity-100 font-semibold hover:text-white"
@@ -216,14 +227,16 @@
 					</div>
 				</a>
 			</div>
+
+			<!-- HOURS OF OPERATION -->
 			<div id="/visit_us" class="flex justify-center text-xl">Hours of Operation</div>
-			<div class="flex justify-evenly">
-				<div>
+			<div class="flex justify-center">
+				<div class="p-8 pt-1">
 					{#each hoursOfOperation as item}
 						<div>{item.day}</div>
 					{/each}
 				</div>
-				<div>
+				<div class="p-8 pt-1">
 					{#each hoursOfOperation as item}
 						<div>{item.hours}</div>
 					{/each}
@@ -231,5 +244,7 @@
 			</div>
 		</div>
 	</div>
-	<iframe class="flex w-full h-2/5" title="map" src={GOOGLE_MAP_URL} />
+
+	<!-- MAP -->
+	<iframe class="flex w-full h-96" title="map" src={GOOGLE_MAP_URL} />
 </div>
