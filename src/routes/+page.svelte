@@ -38,6 +38,9 @@
 	 */
 	let fuse;
 
+	const GOOGLE_MAP_URL =
+		'https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=19';
+
 	onMount(async () => {
 		bannerMessage = await getBannerMessage();
 
@@ -90,23 +93,25 @@
 		<button class="text-white" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
 		<div>
 			<input
-				class="rounded-md"
+				class="rounded-md p-2"
 				bind:value={menuSearchQuery}
 				on:input={performSearch}
 				placeholder="Type to search..."
 			/>
-			<div class="absolute right-5 top-14 max-h-80 w-80 p-4 bg-white z-50 overflow-auto">
-				{#each menuSearchResults as item}
-					<div class="flex justify-between">
-						<div>
-							{item.name}
+			{#if menuSearchResults.length}
+				<div class="absolute right-5 top-14 max-h-80 w-80 p-4 bg-white z-50 overflow-auto">
+					{#each menuSearchResults as item}
+						<div class="flex justify-between">
+							<div>
+								{item.name}
+							</div>
+							<div>
+								{item.price}
+							</div>
 						</div>
-						<div>
-							{item.price}
-						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 	</div>
 	{#if menuOpen}
@@ -117,9 +122,9 @@
 					class="flex min-h-full items-start justify-center p-4 text-center sm:items-center sm:p-0"
 				>
 					<div
-						class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+						class="relative transform overflow-hidden rounded-lgtext-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg bg-white rounded-md"
 					>
-						<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex">
+						<div class=" px-4 pb-4 pt-5 sm:p-6 sm:pb-4 flex">
 							<div class="flex justify-between w-screen">
 								<div class="font-bold text-lg">MENU</div>
 								<button class="text-xl" on:click={() => (menuOpen = !menuOpen)}>X</button>
@@ -127,7 +132,7 @@
 						</div>
 						<div>
 							{#each Object.values(menu) as category}
-								<div class="m-4 border-solid border-2 border-gray-300 rounded-md">
+								<div class="m-4 rounded-lg shadow-md bg-white border border-gray-300">
 									<div class="flex justify-start">
 										{#if category.visible}
 											<button
@@ -138,7 +143,7 @@
 											</button>
 										{:else}
 											<button
-												class="flex justify-start p-2 text-lg w-full"
+												class="flex justify-center p-4 text-lg w-full shadow-md"
 												on:click={() => (category.visible = !category.visible)}
 												>{category.name}</button
 											>
@@ -151,14 +156,14 @@
 													<div class="text-lg">{item.name}</div>
 													<div class="font-bold text-lg text-green-500">{item.price}</div>
 												</div>
-												<div class="font-light">
+												<div class="text-justify font-light">
 													{item.description}
 												</div>
-												{#if item.image}
-													<div class="flex justify-center py-4">
+												<!-- {#if item.image}
+													<div class="flex justify-center pb-8">
 														<img src={item.image} alt="Menu item" width="300" height="400" />
 													</div>
-												{/if}
+												{/if} -->
 											</div>
 										{/each}
 									{/if}
@@ -226,9 +231,5 @@
 			</div>
 		</div>
 	</div>
-	<iframe
-		class="flex w-full h-2/5"
-		title="map"
-		src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=19"
-	/>
+	<iframe class="flex w-full h-2/5" title="map" src={GOOGLE_MAP_URL} />
 </div>
