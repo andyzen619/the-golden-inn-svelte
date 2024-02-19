@@ -40,6 +40,9 @@
 	const GOOGLE_MAP_URL =
 		'https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=17';
 
+	const BACKGROUND_IMAGE =
+		'https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca';
+
 	/**
 	 * Perform search operation based on the input value.
 	 * @param {Event} event - The input event.
@@ -82,6 +85,7 @@
 			};
 		}, {});
 
+		// @ts-ignore
 		const menuToSearch = Object.entries(menuFromDb).reduce((acc, curr) => {
 			const [, value] = curr;
 
@@ -100,10 +104,7 @@
 	});
 </script>
 
-<div
-	class="h-full"
-	style="background-image: url('https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca')"
->
+<div class="h-full" style="background-image: url('{BACKGROUND_IMAGE}')">
 	<Navbar {onMenuClick} {performSearch} {menuSearchResults} />
 
 	<!-- MENU -->
@@ -152,11 +153,6 @@
 												<div class="text-justify font-light">
 													{item.description}
 												</div>
-												<!-- {#if item.image}
-													<div class="flex justify-center pb-8">
-														<img src={item.image} alt="Menu item" width="300" height="400" />
-													</div>
-												{/if} -->
 											</div>
 										{/each}
 									{/if}

@@ -17,9 +17,13 @@ export async function getBannerMessage() {
 
 	const snapshot = await getDoc(reference);
 
-	const { message, title, visible } = snapshot.data();
+	const { message, title, visible } = snapshot.data() || {};
 
-	return { message, title, visible };
+	return {
+		message,
+		title,
+		visible
+	};
 }
 
 export async function getHoursOfOperation() {
@@ -27,7 +31,7 @@ export async function getHoursOfOperation() {
 
 	const snapshot = await getDoc(reference);
 
-	const { hoursOfOperation } = snapshot.data();
+	const { hoursOfOperation } = snapshot.data() || {};
 
 	return hoursOfOperation;
 }
@@ -37,7 +41,7 @@ export async function getMenu() {
 
 	const snapshot = await getDoc(reference);
 
-	const { combinations, dinners, dishes } = snapshot.data();
+	const { combinations, dinners, dishes } = snapshot.data() || {};
 
 	const { Rice, appetizers, canadian, cantonese, chowMein, eggFooYoung, soups, vA } = dishes;
 
@@ -73,7 +77,7 @@ function MenuItem(params) {
 }
 
 /**
- * @param {{ [s: string]: any; } | ArrayLike<any>} all
+ * @param {{ [x: string]: any; name: any; }} all
  */
 function applyMenuItemToAll(all) {
 	const { name, ...restOfValues } = all;
