@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import Fuse from 'fuse.js';
+	import Navbar from '../components/Navbar.svelte';
 
 	import { getYearsSinceStartYear, getBannerMessage, getHoursOfOperation, getMenu } from '$lib';
 
@@ -31,15 +32,36 @@
 	 */
 	let menuSearchResults = [];
 
-	let menuSearchQuery = '';
-
 	/**
 	 * @type {string | Fuse<string | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; }>}
 	 */
 	let fuse;
 
 	const GOOGLE_MAP_URL =
-		'https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=19';
+		'https://www.google.com/maps/embed/v1/place?key=AIzaSyCEjL7ZIpn9SUG8raac9BtH18ZONAD_3hc&q=155%20Picton%20Main%20St%20Picton%2C%20ON%20K0K%202T0&center=44.00682504045187,-77.14345292848745&zoom=17';
+
+	/**
+	 * Perform search operation based on the input value.
+	 * @param {Event} event - The input event.
+	 * @returns {void}
+	 */
+	function performSearch(event) {
+		const inputElement = event.target;
+
+		if (inputElement instanceof HTMLInputElement) {
+			const inputValue = inputElement.value;
+
+			const result = fuse.search(inputValue);
+
+			if (Array.isArray(result)) {
+				menuSearchResults = result.map(({ item }) => item);
+			}
+		}
+	}
+
+	function onMenuClick() {
+		menuOpen = !menuOpen;
+	}
 
 	onMount(async () => {
 		bannerMessage = await getBannerMessage();
@@ -76,47 +98,13 @@
 			keys: ['name']
 		});
 	});
-
-	function performSearch() {
-		const result = fuse.search(menuSearchQuery);
-
-		// @ts-ignore
-		menuSearchResults = result.map(({ item }) => item);
-	}
 </script>
 
 <div
 	class="h-full"
 	style="background-image: url('https://firebasestorage.googleapis.com/v0/b/the-golden-inn-restaurant.appspot.com/o/goldenInnBackground.png?alt=media&token=c031b198-7ddc-4881-94e9-b61866bc15ca')"
 >
-	<!-- NAV BAR -->
-	<div class="bg-red-700 flex justify-between p-6">
-		<button class="text-white text-2xl" on:click={() => (menuOpen = !menuOpen)}>Menu</button>
-		<div>
-			<input
-				class="rounded-md p-2"
-				bind:value={menuSearchQuery}
-				on:input={performSearch}
-				placeholder="Type to search..."
-			/>
-			{#if menuSearchResults.length}
-				<div
-					class="absolute right-5 top-20 max-h-96 w-96 bg-white z-50 overflow-auto rounded-md p-2"
-				>
-					{#each menuSearchResults as item}
-						<div class="flex justify-between p-4 mx-auto">
-							<div>
-								{item.name}
-							</div>
-							<div>
-								{item.price}
-							</div>
-						</div>
-					{/each}
-				</div>
-			{/if}
-		</div>
-	</div>
+	<Navbar {onMenuClick} {performSearch} {menuSearchResults} />
 
 	<!-- MENU -->
 	{#if menuOpen}
