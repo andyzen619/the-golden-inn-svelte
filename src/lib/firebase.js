@@ -46,18 +46,18 @@ export async function getMenu() {
 	const { Rice, appetizers, canadian, cantonese, chowMein, eggFooYoung, soups, vA } = dishes;
 
 	return {
-		combinations: { list: applyMenuItemToAll(combinations), name: combinations.name },
-		dinners: { list: applyMenuItemToAll(dinners), name: dinners.name },
-		rice: { list: applyMenuItemToAll(Rice), name: Rice.name },
-		appetizers: { list: applyMenuItemToAll(appetizers), name: appetizers.name },
-		canadian: { list: applyMenuItemToAll(canadian), name: canadian.name },
-		cantonese: { list: applyMenuItemToAll(cantonese), name: cantonese.name },
-		chowMein: { list: applyMenuItemToAll(chowMein), name: chowMein.name },
-		eggFooYoung: { list: applyMenuItemToAll(eggFooYoung), name: eggFooYoung.name },
-		soups: { list: applyMenuItemToAll(soups), name: soups.name },
-		vegetablesAndAlmonds: { list: applyMenuItemToAll(vA), name: vA.name },
+		combinations: { list: MenuItemList(combinations), name: combinations.name },
+		dinners: { list: MenuItemList(dinners), name: dinners.name },
+		rice: { list: MenuItemList(Rice), name: Rice.name },
+		appetizers: { list: MenuItemList(appetizers), name: appetizers.name },
+		canadian: { list: MenuItemList(canadian), name: canadian.name },
+		cantonese: { list: MenuItemList(cantonese), name: cantonese.name },
+		chowMein: { list: MenuItemList(chowMein), name: chowMein.name },
+		eggFooYoung: { list: MenuItemList(eggFooYoung), name: eggFooYoung.name },
+		soups: { list: MenuItemList(soups), name: soups.name },
+		vegetablesAndAlmonds: { list: MenuItemList(vA), name: vA.name },
 		sweetAndSour: {
-			list: applyMenuItemToAll(dishes['sweet&Sour']),
+			list: MenuItemList(dishes['sweet&Sour']),
 			name: dishes['sweet&Sour'].name
 		}
 	};
@@ -79,7 +79,7 @@ function MenuItem(params) {
 /**
  * @param {{ [x: string]: any; name: any; }} all
  */
-function applyMenuItemToAll(all) {
+function MenuItemList(all) {
 	const { name, ...restOfValues } = all;
 
 	return Object.values(restOfValues).map((value) => {
