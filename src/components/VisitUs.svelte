@@ -1,5 +1,21 @@
 <script>
-	export let hoursOfOperation = [{ day: '', hours: '' }];
+	import { onMount } from 'svelte';
+
+	import { getHoursOfOperation } from '../lib';
+
+	let hoursOfOperation = [
+		{ day: 'Mon', hours: 'Closed' },
+		{ day: 'Tue', hours: '11:30 a.m. – 09:00 p.m.' },
+		{ day: 'Wed', hours: '11:30 a.m. – 09:00 p.m.' },
+		{ day: 'Thurs', hours: '11:30 a.m. – 09:00 p.m.' },
+		{ day: 'Fri', hours: '11:30 a.m. – 09:00 p.m.' },
+		{ day: 'Sat', hours: '11:30 a.m. – 09:00 p.m.' },
+		{ day: 'Sun', hours: '11:30 a.m. – 09:00 p.m.' }
+	];
+
+	onMount(async () => {
+		hoursOfOperation = await getHoursOfOperation();
+	});
 </script>
 
 <div class="flex flex-col w-screen justify-evenly text-white p-4">

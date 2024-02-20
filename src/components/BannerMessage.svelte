@@ -1,9 +1,17 @@
 <script>
-	export let bannerMessage = {
-		visible: false,
+	import { onMount } from 'svelte';
+
+	import { getBannerMessage } from '../lib';
+
+	let bannerMessage = {
+		message: '',
 		title: '',
-		message: ''
+		visible: false
 	};
+
+	onMount(async () => {
+		bannerMessage = await getBannerMessage();
+	});
 </script>
 
 {#if bannerMessage.visible}

@@ -1,12 +1,32 @@
 <script>
+	import { onMount } from 'svelte';
+
+	import { getMenu } from '../lib';
+
 	export let menuOpen = false;
 
-	export let menu = {};
+	let menu = {};
 
 	/**
 	 * @type {(event: Event) => void}
 	 */
 	export let onMenuCloseClick;
+
+	onMount(async () => {
+		const menuFromDb = await getMenu();
+
+		menu = Object.entries(menuFromDb).reduce((acc, curr) => {
+			const [key, value] = curr;
+
+			return {
+				...acc,
+				[key]: {
+					...value,
+					visible: false
+				}
+			};
+		}, {});
+	});
 </script>
 
 {#if menuOpen}

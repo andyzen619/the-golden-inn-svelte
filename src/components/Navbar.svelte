@@ -1,18 +1,62 @@
 <script>
-	/**
-	 * @type {{ name: string, price: string }[]}
-	 */
-	export let menuSearchResults = [];
+	import { onMount } from 'svelte';
+	import Fuse from 'fuse.js';
 
-	/**
-	 * @type {(event: Event) => void}
-	 */
-	export let performSearch;
+	import { getMenu } from '../lib';
 
 	/**
 	 * @type {(event: Event) => void}
 	 */
 	export let onMenuClick;
+
+	/**
+	 * @type {string | Fuse<string | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; } | { list: { price: string; description: string; image: URL; name: string; }[]; name: any; }>}
+	 */
+	let fuse;
+
+	/**
+	 * @type {any[]}
+	 */
+	let menuSearchResults = [];
+
+	/**
+	 * Perform search operation based on the input value.
+	 * @param {Event} event - The input event.
+	 * @returns {void}
+	 */
+	function performSearch(event) {
+		const inputElement = event.target;
+
+		if (inputElement instanceof HTMLInputElement) {
+			const inputValue = inputElement.value;
+
+			const result = fuse.search(inputValue);
+
+			if (Array.isArray(result)) {
+				menuSearchResults = result.map(({ item }) => item);
+			}
+		}
+	}
+
+	onMount(async () => {
+		const menuFromDb = await getMenu();
+
+		const menuToSearch = Object.entries(menuFromDb).reduce((acc, curr) => {
+			const [, value] = curr;
+
+			if (value && Array.isArray(value.list)) {
+				const { list = [] } = value;
+
+				return [...acc, ...list];
+			}
+
+			return acc;
+		}, new Array());
+
+		fuse = new Fuse(menuToSearch, {
+			keys: ['name']
+		});
+	});
 </script>
 
 <div class="bg-red-700 flex justify-between px-8 py-4">

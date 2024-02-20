@@ -1,5 +1,7 @@
 <script>
-	export let numberOfYearsInOperation = 0;
+	import { getYearsSinceStartYear } from '$lib';
+
+	let numberOfYearsInOperation = getYearsSinceStartYear(1997);
 
 	/**
 	 * @type {(event: Event) => void}
