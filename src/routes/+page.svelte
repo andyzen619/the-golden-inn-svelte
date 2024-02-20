@@ -122,7 +122,7 @@
 	<div>
 		<BannerMessage {bannerMessage} />
 
-		<Landing {menuOpen} {numberOfYearsInOperation} />
+		<Landing {onMenuClick} {numberOfYearsInOperation} />
 
 		<VisitUs {hoursOfOperation} />
 	</div>
