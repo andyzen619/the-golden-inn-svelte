@@ -2,6 +2,15 @@ import Fastify from 'fastify';
 import OrdersService from './features/orders/services/OrdersService.js';
 import moment from 'moment-timezone';
 
+/**
+ * Request body object representing an order.
+ * @typedef {Object} OrderRequestBody
+ * @property {Array<{ id: string, count: number }>} menuItems - An array of menu items with their IDs and counts.
+ * @property {string} [notes] - Additional notes for the order.
+ * @property {string} phoneNumber - The phone number associated with the order.
+ * @property {string} pickUpTime - The pick-up time for the order in ISO 8601 format.
+ */
+
 const PinoPrettyLoggingConfig = {
 	transport: {
 		target: 'pino-pretty',
@@ -58,10 +67,13 @@ fastify.post(
 			}
 		}
 	},
+	/**
+	 * Handles creating an order.
+	 * @param {import('fastify').FastifyRequest<{ Body: OrderRequestBody }>} request - The request object with a body property representing an order.
+	 * @returns {Promise<{ order: any }>} A promise that resolves to an object containing the created order.
+	 */
 	async (request) => {
-		const { body } = request;
-
-		const { menuItems, notes, phoneNumber, pickUpTime } = body;
+		const { menuItems, notes, phoneNumber, pickUpTime } = request.body;
 
 		const orderParams = { menuItems, notes, phoneNumber, pickUpTime: moment(pickUpTime).toDate() };
 
